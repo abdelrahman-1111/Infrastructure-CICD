@@ -2,7 +2,7 @@
 resource "aws_vpc" "my-vpc" {
   cidr_block = "10.0.0.0/16"
 }
-#creating first public subnet with CIDR 10.0.1.0/14 in AZ us-east-1a under the new created vpc 
+#creating first public subnet with CIDR 10.0.1.0/24 in AZ us-east-1a under the new created vpc 
 resource "aws_subnet" "public1" {
   vpc_id            = aws_vpc.my-vpc.id
   cidr_block        = "10.0.1.0/24"
@@ -11,7 +11,7 @@ resource "aws_subnet" "public1" {
     Name = "public-subnet1"
   }
 }
-#creating second public subnet with CIDR 10.0.2.0/14 in AZ us-east-1b under the new created vpc 
+#creating second public subnet with CIDR 10.0.2.0/24 in AZ us-east-1b under the new created vpc 
 resource "aws_subnet" "public2" {
   vpc_id            = aws_vpc.my-vpc.id
   cidr_block        = "10.0.2.0/24"
@@ -21,7 +21,7 @@ resource "aws_subnet" "public2" {
     Name = "public-subnet2"
   }
 }
-#creating first private subnet with CIDR 10.0.3.0/14 in AZ us-east-1a under the new created vpc 
+#creating first private subnet with CIDR 10.0.3.0/24 in AZ us-east-1a under the new created vpc 
 
 resource "aws_subnet" "private1" {
   vpc_id            = aws_vpc.my-vpc.id
@@ -31,7 +31,7 @@ resource "aws_subnet" "private1" {
     Name = "private-subnet1"
   }
 }
-#creating second private subnet with CIDR 10.0.4.0/14 in AZ us-east-1b under the new created vpc 
+#creating second private subnet with CIDR 10.0.4.0/24 in AZ us-east-1b under the new created vpc 
 resource "aws_subnet" "private2" {
   vpc_id            = aws_vpc.my-vpc.id
   cidr_block        = "10.0.4.0/24"
