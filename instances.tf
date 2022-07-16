@@ -6,7 +6,7 @@ resource "aws_instance" "bastionHost" {
   subnet_id                   = aws_subnet.public1.id
   key_name                    = aws_key_pair.generated_key.key_name #attach the public key i created and saved its private one in secrets manager
   associate_public_ip_address = true #to provide it with public ip 
-  security_groups             = [aws_security_group.allow_ssh.id] 
+  vpc_security_group_ids           = [aws_security_group.allow_ssh.id] 
   tags = {
     Name = "bastionHost"
   }
@@ -17,7 +17,7 @@ resource "aws_instance" "privateinstance" {
   ami             = "ami-052efd3df9dad4825"
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.private1.id
-  security_groups = [aws_security_group.allow_3000.id]
+  vpc_security_group_ids = [aws_security_group.allow_3000.id]
   key_name        = aws_key_pair.generated_key.key_name #attach the public key i created and saved its private one in secrets manager
   tags = {
     Name = "private-instance"
