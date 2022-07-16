@@ -1,4 +1,4 @@
-variable vpc-region {
+variable vpc_region {
   type        = string
   description = "the region where the subnets will be created"
 }

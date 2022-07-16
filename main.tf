@@ -17,14 +17,13 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module network {
+module "my_network" {
+  source               = "./network"
+  vpc_region           = var.region
+  vpc_CIDR             = var.vpc_CIDR
+  public_subnet1_CIDR  = var.public_subnet1_CIDR
+  public_subnet2_CIDR  = var.public_subnet2_CIDR
+  private_subnet1_CIDR = var.private_subnet1_CIDR
+  private_subnet2_CIDR = var.private_subnet2_CIDR
 
-  source = "./network"
-  module.vpc-region  = var.region
-  module.vpc_CIDR = var.vpc_CIDR
-  module.public_subnet1_CIDR = var.public_subnet1_CIDR
-  module.public_subnet2_CIDR = var.public_subnet2_CIDR
-  module.private_subnet1_CIDR = var.private_subnet1_CIDR
-  module.private_subnet2_CIDR = var.private_subnet2_CIDR
-  
 }
