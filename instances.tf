@@ -10,6 +10,9 @@ resource "aws_instance" "bastionHost" {
   tags = {
     Name = "bastionHost"
   }
+    provisioner "local-exec" {
+    command = "echo ${self.public_ip} >> my_bastion_public_ip.txt"
+  }
 }
 #creating the private instance with same ubunto AMI in private1-subnet 
 #having security group allow any traffic on port 3000 and ssh protocol on port 22 from my vpc CIDR range only
