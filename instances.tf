@@ -10,7 +10,7 @@ resource "aws_instance" "bastionHost" {
   tags = {
     Name = "bastionHost"
   }
-    provisioner "local-exec" {
+  provisioner "local-exec" {
     command = "echo ${self.public_ip} >> my_bastion_public_ip.txt"
   }
 }

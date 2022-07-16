@@ -30,3 +30,11 @@ variable "instance_type" {
   type    = string
   default = "t2.micro"
 }
+variable "RDS_user" {
+  type      = string
+  sensitive = true
+}
+variable "RDS_pass" {
+  type      = string
+  sensitive = true
+}
