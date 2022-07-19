@@ -1,12 +1,11 @@
 # Terraform-AWS
-I deployed the basic infrstructure on AWS provider using Terraform such as a VPC with private and public subnets having thier route tables to the Intenet gatway and NAT gatway
-and uploading my statefile to s3 bucket to be synchronize with the changes my contributers do and to be able to trigger it with lambda function to send me mail with every update in it using AWS SES service 
-## whats i have used in this project
+I deployed the basic infrstructure on AWS provider using Terraform with 2 diffrenet workspaces (dev/prod) and 2 .tfvars file and uploading my statefile to s3 bucket to be synchronize with the changes my contributers do and to be able to trigger it with lambda function to send me mail with every update in it using AWS SES service 
+## Tools and Services i used in this project
 * Terraform for deploying IaC on cloud provider
 * AWS as my cloud provider
 * AWS Simple Storage Service (S3) to store my statefile
 * lambda function to trigger any updates on the statefile
-* tls provider to generate TLS keys to ssh the instances
+* TLS provider to generate private and public keys to ssh the instances
 * AWS secret manager to store my private key 
 ### So, lets begin with the infrastructre i have deployed 
 first i created a module and name it network to contains all my network configurations to be re-usable 
@@ -33,11 +32,14 @@ i deployed 2 instances the first have the following configurations:
 * Assigned to it the key_pair resource which holds my public key
 * A provisioner to stores the public ip to local text file 
 
-second hace the following:
-i deployed 2 instances the first have the following configurations:
+The Second have the following configurations:
 * The AMI and instance type as varaibles to easily modify later
 * Without external ip
 * attached to one of the private subnets
 * Attached to security group which allow the ingress from my VPC CIDR range only on port 22 
 * Assigned to it the key_pair resource which holds my public key
+> After copying the private key stored in the secret manager, I can now ssh into my private instance from the bastion
 
+## Creating two tfvars files for both dev and prod workspaces 
+I created two diffrenet tfvars files, each have a diffrenet declaraton for some variables as the region of the VPC as example
+and now each workspace have its individual statefile saved in the same S3 bucket but in diffrenet directory under the env::/ directory.
