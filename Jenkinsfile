@@ -3,7 +3,8 @@ pipeline {
         stages {
             stage('terraform init') {
                 steps {
-                    sh 'terraform init '
+                    withAWS(credentials: 'aws_credential', region: 'us-east-1'){
+                    sh 'terraform init '}
                 }
             }
             stage('terraform apply') {
