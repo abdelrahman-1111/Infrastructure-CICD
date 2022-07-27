@@ -33,8 +33,10 @@ variable "instance_type" {
 variable "RDS_user" {
   type      = string
   sensitive = true
+  default = "test"
 }
 variable "RDS_pass" {
   type      = string
   sensitive = true
+  default = "test"
 }
