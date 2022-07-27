@@ -17,8 +17,8 @@ resource "aws_db_instance" "myDB" {
   engine_version         = "5.7"
   instance_class         = "db.t3.micro"
   name                   = "mydb"
-  username               = var.RDS_user
-  password               = var.RDS_pass
+  username               = "hamada"
+  password               = "hamada"
   parameter_group_name   = "default.mysql5.7"
   skip_final_snapshot    = true
   port                   = 3306
