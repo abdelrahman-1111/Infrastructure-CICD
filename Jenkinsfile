@@ -13,7 +13,7 @@ pipeline {
             //         sh 'terraform apply --auto-approve -no-color '}
             //         }
             // }
-            // // stage('creating ec2 slave - ansible playbook ') {
+            stage('creating ec2 slave - ansible playbook ') {
                 steps {
                     withAWS(credentials: 'aws_credential', region: 'us-east-1'){
                     sh 'ansible-playbook slave.yaml  '}
@@ -25,6 +25,6 @@ pipeline {
             //             sh 'terraform destroy --auto-approve -no-color '}
             //             }
             //     }
-        // }
+        }
     }
 
