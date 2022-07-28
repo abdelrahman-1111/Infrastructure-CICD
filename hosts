@@ -1,2 +1,8 @@
+[bastion]
+3.85.61.105
+
 [private]
-10.0.3.80
+10.0.3.60
+
+[nodes:vars]
+ansible_ssh_common_args='-o ProxyCommand="ssh -p 22 -W %h:%p -q ubuntu@3.85.61.105"'
