@@ -1,10 +1,12 @@
----
-  bastion: 
-    3.85.61.105: true
-  private: 
-    10.0.3.60: true
-  nodes:vars: 
-    ansible_ssh_common_args: "-o ProxyCommand=\"ssh -p 22 -W %h:%p -q ubuntu@3.85.61.105\""
+[jumpboxes_public]
+my-public-bastion ansible_host=3.85.61.105
 
+[jumpboxes_private]
+my-host-behind-bastion ansible_host=10.0.3.60
 
+[jumpboxes_private:vars]
+ansible_ssh_common_args="-o ProxyCommand=\"ssh -q ubuntu@3.85.61.105 -o IdentityFile=/var/jenkins_home/pk -o Port=22 -W %h:%p\""
 
+[all:vars] 
+ansible_ssh_private_key_file=/var/jenkins_home/pk
+ansible_user=ubuntu
