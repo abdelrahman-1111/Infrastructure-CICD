@@ -1,8 +1,13 @@
-[bastion]
-3.85.61.105
+#[bastion]
+#3.85.61.105
+#
+#[private]
+#10.0.3.60
+#
+#[nodes:vars]
+#ansible_ssh_common_args='-o ProxyCommand="ssh -p 22 -W %h:%p -q ubuntu@3.85.61.105"'
 
-[private]
-10.0.3.60
-
-[nodes:vars]
-ansible_ssh_common_args='-o ProxyCommand="ssh -p 22 -W %h:%p -q ubuntu@3.85.61.105"'
+[node]
+server-a ansible_host=10.0.3.60 ansible_user=ubuntu ansible_ssh_private_key_file=var/jenkins_home/pk
+[node:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion"'
