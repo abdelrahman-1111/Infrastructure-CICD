@@ -1,4 +1,19 @@
+[bastion]
+3.85.61.105
+
+[bastion:vars]
+ansible_ssh_user=ubuntu
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@10.0.3.60"'
+ansible_ssh_private_key_file=/var/jenkins_home/pk
+
 [node]
-server-a ansible_host=10.0.3.60 ansible_user=ubuntu ansible_ssh_private_key_file=var/jenkins_home/pk
+#ip of EC2 instance
+10.0.3.60
+
 [node:vars]
-ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion"'
+ansible_user=ubuntu
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ubuntu@10.0.3.60'
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_ssh_private_key_file=/var/jenkins_home/pk
