@@ -16,7 +16,7 @@ EOF
 }
 
 resource "local_file" "sshconfig" {
-    filename = "/var/jenkins_home/.ssh/config"
+    filename = "/root/.ssh/config"
     depends_on = [local_file.private_key]
     content = <<EOF
 Host bastion
