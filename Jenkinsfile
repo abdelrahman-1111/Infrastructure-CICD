@@ -16,7 +16,7 @@ pipeline {
             stage('creating ec2 slave - ansible playbook ') {
                 steps {
                     withAWS(credentials: 'aws_credential', region: 'us-east-1'){
-                    sh 'ansible-playbook slave.yaml  '}
+                    sh 'ansible-playbook -i hosts slave.yaml  '}
                 }
             }
             // stage('terraform destroy') {
