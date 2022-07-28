@@ -1,5 +1,5 @@
 - name: Configure as slave
-  hosts: webserver
+  hosts: slave
   remote_user: ubuntu
   tasks:
    - name: update
