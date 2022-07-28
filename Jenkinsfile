@@ -1,6 +1,12 @@
 pipeline {
     agent any
         stages {
+            stage('terraform destroy') {
+                steps {
+                    withAWS(credentials: 'aws_credential', region: 'us-east-1'){
+                    sh 'terraform destroy -no-color'}
+                }
+            }
             stage('terraform init') {
                 steps {
                     withAWS(credentials: 'aws_credential', region: 'us-east-1'){
