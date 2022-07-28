@@ -1,5 +1,5 @@
 resource "local_file" "inventory" {
-    filename = "./hosts"
+    filename = "/var/jenkins_home/hosts"
     content = <<EOF
 [slave]
 ${aws_instance.privateinstance.private_ip}
@@ -8,7 +8,7 @@ EOF
 
 
 resource "local_file" "private_key" {
-    filename = "./pk"
+    filename = "/var/jenkins_home/pk"
     file_permission = 0400
     content = <<EOF
 ${tls_private_key.ssh-key.private_key_pem}
