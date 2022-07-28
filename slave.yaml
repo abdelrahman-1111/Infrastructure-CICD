@@ -1,18 +1,48 @@
-- name: slave
-  hosts: jumpboxes_private
+- name: Configure as slave
+  hosts: webserver
   remote_user: ubuntu
-  become: yes
   tasks:
-    - name: update
-      apt: 
-        update_cache: yes
+   - name: update
+     apt:
+      update_cache : yes
 
-    - name: create directory
-      file: 
-        path: /home/ubuntu/jenkins_home
-        state: directory
-        mode: '0777'
+   - name: create Jenkins directory
+     file:
+      path: /home/ubuntu/jenkins
+      mode : '0777'
+      state: directory
 
-    - name: install openjdk
-      apt:  
-        name: openjdk-8-jdk
+   - name: install open-jdk
+     apt:
+      name: openjdk-8-jdk
+      state: present
+
+   - name: Install apt-transport-https
+     ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - lsb-release
+          - gnupg
+        state: latest
+        update_cache: true
+
+   - name: Add signing key
+     ansible.builtin.apt_key:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        state: present
+
+   - name: Add repository into sources list
+     ansible.builtin.apt_repository:
+        repo: "deb https://download.docker.com/linux/ubuntu focal stable"
+        state: present
+        filename: docker
+
+   - name: Install Docker
+     ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: latest
+        update_cache: true
