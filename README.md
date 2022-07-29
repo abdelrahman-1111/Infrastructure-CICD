@@ -285,7 +285,8 @@ EOF
           update_cache: true
 ```
 ### now i just need to create a new slave node from my jenkins UI 
-![image](https://user-images.githubusercontent.com/104630009/181843824-a5abb1ee-b5c1-4dbe-ad4b-40aa35268d11.png)
+![image](https://user-images.githubusercontent.com/104630009/181854071-a214e4d0-fc99-4b47-afed-8f853c77907b.png)
+
 # deploy Nodejs app on the slave node 
 ### since i need to get clone for only one branch from this repo i used the following command 
 ``` git clone -b <branch-name> <repo-url> ```
