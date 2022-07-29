@@ -146,10 +146,13 @@ wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update && sudo apt install terraform
 ```
-4. create credentials to authorize jenkins to create my resources on AWS so i used a plugin called cloudBees AWS Credentials and saved my access and secret access keys in it
+3. create credentials to authorize jenkins to create my resources on AWS so i used a plugin called cloudBees AWS Credentials and saved my access and secret access keys in it
 ![image](https://user-images.githubusercontent.com/104630009/181839876-769030f0-5127-4c05-910b-d7c72e113e4a.png)
 
-4. create a jenkinsfile and push it to my repo 
+4. install plugin AWS steps to enable the jenkins to interact with AWS APIs
+![image](https://user-images.githubusercontent.com/104630009/181855037-be339b3a-e270-487e-888c-f5974eec1fee.png)
+
+5. create a jenkinsfile and push it to my repo 
 ```
 pipeline {
     agent any
