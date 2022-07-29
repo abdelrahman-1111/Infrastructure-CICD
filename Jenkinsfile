@@ -36,6 +36,7 @@ pipeline {
                 steps {
                     agent { label 'slave-vm' }
                         sh '''
+                            sudo chmod 666 /var/run/docker.sock
                             cd ./Nodeapp
                             docker build . -f dockerfile -t nodejsapp 
                         '''    
