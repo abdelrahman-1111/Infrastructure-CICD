@@ -36,7 +36,8 @@ pipeline {
                 steps {
                     agent { label 'slave-vm' }
                         sh '''
-                            docker build -t nodejsapp -f ./Nodeapp
+                            cd ./Nodeapp
+                            docker build . -f dockerfile -t nodejsapp 
                         '''    
                     }
                 }
