@@ -34,7 +34,7 @@ pipeline {
             }
             stage('build the application'){
                 steps {
-                    agent { node { label 'slave-vm'} }
+                    agent { label 'slave-vm' }
                         dockerfile {
                             filename 'dockerfile'
                             dir 'Nodeapp'
@@ -44,7 +44,7 @@ pipeline {
                 }
             stage('deploy the application'){
                 steps {
-                    agent { node { label 'slave-vm'} }
+                    agent { label 'slave-vm' }
                         docker {
                             image 'redisapp:latest'
                             label 'redisapp:latest'
