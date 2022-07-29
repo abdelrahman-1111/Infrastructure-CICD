@@ -35,21 +35,17 @@ pipeline {
             stage('build the application'){
                 steps {
                     agent { label 'slave-vm' }
-                        dockerfile {
-                            filename 'dockerfile'
-                            dir 'Nodeapp'
-                            label 'redisapp:latest'
-                            }
+                        sh '''
+                            docker build -t nodejsapp -f ./Nodeapp
+                        '''    
                     }
                 }
             stage('deploy the application'){
                 steps {
                     agent { label 'slave-vm' }
-                        docker {
-                            image 'redisapp:latest'
-                            label 'redisapp:latest'
-                            args '-p 3000:3000'
-                        }
+                        sh '''
+                            docker run -itd -p 3000:3000 -v RDS_HOSTNAME=admin -v RDS_USERNAME=admin -v RDS_PASSWORD=admin -v RDS_PORT=3000 nodejsapp
+                        '''
                     }
                 }
             }
