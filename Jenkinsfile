@@ -13,7 +13,6 @@ pipeline {
             //         sh 'terraform destroy --auto-approve -no-color'}
             //     }
             // }
-            
             stage('terraform plan') {
                 steps {
                     withAWS(credentials: 'aws_credential', region: 'us-east-1'){
