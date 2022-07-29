@@ -32,7 +32,27 @@ pipeline {
                     sh 'ansible-playbook -i /var/jenkins_home/hosts slave.yaml  '}
                 }
             }
-
+            stage('build the application'){
+                steps {
+                    agent { node { label 'slave-vm'} }
+                        dockerfile {
+                            filename 'dockerfile'
+                            dir 'Nodeapp'
+                            label 'redisapp:latest'
+                            }
+                    }
+                }
+            stage('deploy the application'){
+                steps {
+                    agent { node { label 'slave-vm'} }
+                        docker {
+                            image 'redisapp:latest'
+                            label 'redisapp:latest'
+                            args '-p 3000:3000'
+                        }
+                    }
+                }
+            }
         }
-    }
+
 
