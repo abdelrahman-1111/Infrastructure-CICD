@@ -74,5 +74,4 @@
 
     - name: Run the script
       ansible.builtin.script: 
-        chdir : /home/ubuntu/jenkins/Nodeapp
-        cmd: ./run.sh
+        cmd: /home/ubuntu/jenkins/Nodeapp/run.sh
