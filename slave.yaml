@@ -46,6 +46,8 @@
           - containerd.io
         state: latest
         update_cache: true
+
    - name: coping and installing agent.jar
-     src: ./agent.jar
-     dest: /home/ubuntu/jenkins/agent.jar
+     ansible.builtin.file:
+      src: ./agent.jar
+      dest: /home/ubuntu/jenkins/agent.jar
