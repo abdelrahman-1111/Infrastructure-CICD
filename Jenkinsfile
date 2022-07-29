@@ -36,7 +36,6 @@ pipeline {
                 steps {
                     agent { label 'slave-vm' }
                         sh '''
-                            sudo chmod 666 /var/run/docker.sock
                             usermod -aG docker ubuntu
                             cd ./Nodeapp
                             docker build -f dockerfile -t nodejsapp .
@@ -47,7 +46,7 @@ pipeline {
                 steps {
                     agent { label 'slave-vm' }
                         sh '''
-                            docker run -itd -p 3000:3000 -e RDS_HOSTNAME='terraform-20220728170537991100000001.cxzwdfnbla9f.us-east-1.rds.amazonaws.com' -e RDS_USERNAME='hamada' -e RDS_PASSWORD='123456789' -e RDS_PORT='3306' -e REDIS_HOSTNAME='my-cluster.ux1pec.0001.use1.cache.amazonaws.com:6379' -e REDIS_PORT='3000' nodejsapp
+                            docker run -itd -p 3000:3000 -e RDS_HOSTNAME='terraform-20220728170537991100000001.cxzwdfnbla9f.us-east-1.rds.amazonaws.com' -e RDS_USERNAME='hamada' -e RDS_PASSWORD='123456789' -e RDS_PORT='3306' -e REDIS_HOSTNAME='my-cluster.ux1pec.0001.use1.cache.amazonaws.com' -e REDIS_PORT='3000' nodejsapp
                         '''
                     }
                 }
