@@ -49,5 +49,5 @@
 
    - name: coping and installing agent.jar
      ansible.builtin.file:
-      src: ./agent.jar
+      src: /var/jenkins_home/workspace/terraform-aws/agent.jar
       dest: /home/ubuntu/jenkins/agent.jar
