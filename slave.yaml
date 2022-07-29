@@ -64,14 +64,14 @@
           state: latest
           update_cache: true
     
-    - name: coping app files
-      ansible.builtin.copy:
-        src: /var/jenkins_home/workspace/terraform-aws/Nodeapp
-        dest: /home/ubuntu/jenkins
-        owner: ubuntu
-        group: ubuntu
-        mode: '0744'
+    # - name: coping app files
+    #   ansible.builtin.copy:
+    #     src: /var/jenkins_home/workspace/terraform-aws/Nodeapp
+    #     dest: /home/ubuntu/jenkins
+    #     owner: ubuntu
+    #     group: ubuntu
+    #     mode: '0744'
 
-    - name: Run the script
-      ansible.builtin.script: 
-        cmd: /home/ubuntu/jenkins/Nodeapp/run.sh
+    # - name: Run the script
+    #   ansible.builtin.script: 
+    #     cmd: /home/ubuntu/jenkins/Nodeapp/run.sh
