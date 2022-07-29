@@ -51,3 +51,6 @@
      ansible.builtin.copy:
       src: /var/jenkins_home/workspace/terraform-aws/agent.jar
       dest: /home/ubuntu/jenkins/agent.jar
+      owner: ubuntu
+      group: ubuntu
+      mode: '0744'
