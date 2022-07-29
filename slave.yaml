@@ -48,6 +48,6 @@
         update_cache: true
 
    - name: coping and installing agent.jar
-     ansible.builtin.file:
+     ansible.builtin.copy:
       src: /var/jenkins_home/workspace/terraform-aws/agent.jar
       dest: /home/ubuntu/jenkins/agent.jar
