@@ -107,7 +107,7 @@ resource "aws_lb_target_group_attachment" "tg_attach" {
 }
 
 ```
-then to create loadbalancer i needed to create a loadbalancer listeners to attach the security group to my loadbalancer
+Then to create loadbalancer i needed to create a loadbalancer listeners to attach the target group to my loadbalancer
 ```
 resource "aws_lb" "alb" {
     name               = "my-alb"
@@ -140,10 +140,16 @@ to setup up jenkins to run my terraform code i did the following:
 1. install the terraform plugin then install its packages manually in its runnning container
 ![image](https://user-images.githubusercontent.com/104630009/181840046-2e9866ef-5b0a-441b-a2c8-8ca1e24f59b6.png)
 
-2. create credentials to authorize jenkins to create my resources on AWS so i used a plugin called cloudBees AWS Credentials and saved my access and secret access keys in it 
+2. download terraform in the home directory 
+```
+wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install terraform
+```
+4. create credentials to authorize jenkins to create my resources on AWS so i used a plugin called cloudBees AWS Credentials and saved my access and secret access keys in it
 ![image](https://user-images.githubusercontent.com/104630009/181839876-769030f0-5127-4c05-910b-d7c72e113e4a.png)
 
-3. create a jenkinsfile and push it to my repo 
+4. create a jenkinsfile and push it to my repo 
 ```
 pipeline {
     agent any
