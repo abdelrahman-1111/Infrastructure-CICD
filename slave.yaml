@@ -14,7 +14,7 @@
 
    - name: install open-jdk
      apt:
-      name: openjdk-8-jdk
+      name: openjdk-11-jdk
       state: present
 
    - name: Install apt-transport-https
