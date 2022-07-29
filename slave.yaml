@@ -46,3 +46,7 @@
           - containerd.io
         state: latest
         update_cache: true
+   
+   - name: coping and installing agent.jar
+     src: ./agent.jar
+     dest: /home/ubuntu/jenkins

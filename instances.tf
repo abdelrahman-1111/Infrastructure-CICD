@@ -24,8 +24,4 @@ resource "aws_instance" "privateinstance" {
   key_name               = aws_key_pair.generated_key.key_name #attach the public key i created and saved its private one in secrets manager
   tags = {
     Name = "private-instance"
-  }
-  provisioner "local-exec" {
-    command = "echo ${self.private_ip} >> vm_private_ip.txt"
-  }
 }
