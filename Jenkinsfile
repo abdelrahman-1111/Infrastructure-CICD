@@ -26,7 +26,7 @@ pipeline {
                     sh 'terraform apply --auto-approve -no-color '}
                     }
             }
-            stage('creating ec2 slave - ansible playbook ') {
+            stage('configure ec2 slave ') {
                 steps {
                     withAWS(credentials: 'aws_credential', region: 'us-east-1'){
                     sh 'ansible-playbook -i /var/jenkins_home/hosts slave.yaml  '}
@@ -37,8 +37,9 @@ pipeline {
                     agent { label 'slave-vm' }
                         sh '''
                             sudo chmod 666 /var/run/docker.sock
+                            usermod -aG docker ubuntu
                             cd ./Nodeapp
-                            docker build . -f dockerfile -t nodejsapp 
+                            docker build -f dockerfile -t nodejsapp .
                         '''    
                     }
                 }
@@ -46,11 +47,11 @@ pipeline {
                 steps {
                     agent { label 'slave-vm' }
                         sh '''
-                            docker run -itd -p 3000:3000 -v RDS_HOSTNAME=admin -v RDS_USERNAME=admin -v RDS_PASSWORD=admin -v RDS_PORT=3000 nodejsapp
+                            docker run -itd -p 3000:3000 -e RDS_HOSTNAME='admin' -e RDS_USERNAME='admin' -e RDS_PASSWORD='admin' -e RDS_PORT='3000' nodejsapp
                         '''
                     }
                 }
             }
-        }
+    }
 
 
