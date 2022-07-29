@@ -1,13 +1,18 @@
-# Terraform-AWS
-creating an automated pipeline using jenkins to create an infrstructure on AWS cloud using Terraform then deploy a Nodejs app on container in the private instance connected to RDS and elasticCache then expose it using a loadbalancer  with 2 diffrenet workspaces (dev/prod) and 2 .tfvars file and uploading my statefile to s3 bucket to be synchronize with the changes my contributers do and to be able to trigger it with lambda function to send me mail with every update in it using AWS SES service 
+# Infrastructure CI/CD for NodeJS app
+## Brief on the project 
+creating an automated pipeline using jenkins to create an infrstructure on AWS cloud using Terraform then deploy a Nodejs app on container in the private instance configured as slave node using Ansible, The application is connected to RDS and elasticCache then expose it using a loadbalancer.
+## Extra features
+uploading my statefile to s3 bucket to be synchronize with the changes my contributers do and to be able to trigger it with lambda function to send me mail with every update in it using AWS SES service 
 ## Tools and Services i used in this project
 * Terraform for deploying IaC on cloud provider
 * AWS as my cloud provider
-* AWS Simple Storage Service (S3) to store my statefile
+* Jenkins for creating the pipeline 
+* Ansible to configure my jenkins slave node
+* AWS Simple Storage Service (S3) to store my terraform statefile
 * lambda function to trigger any updates on the statefile
 * TLS provider to generate private and public keys to ssh the instances
-* AWS secret manager to store my private key 
-### So, lets begin with the infrastructre i have deployed 
+
+### So, lets begin with the infrastructre
 first i created a module and name it network to contains all my network configurations to be re-usable 
 1. A VPC with CIDR range as a variable to be easily modified 
 2. 4 subnets in it having CIDR range and availiablty zone as variables too
@@ -24,7 +29,7 @@ first i created a module and name it network to contains all my network configur
 ### Now i need to create private and public keys to be able ssh my instances securely 
 I used TLS provider to generate public and private keys using TLS provider with Terraform then i create a key_pair resource to store my public key and secret manager to store my private key 
 
-### Now i can deploy my instances securely 
+### Now i can create my instances securely 
 I deployed 2 instances the first have the following configurations:
 * The AMI and instance type as varaibles to easily modify later
 * external ip
@@ -41,6 +46,90 @@ The Second have the following configurations:
 * Assigned to it the key_pair resource which holds my public key
 > After copying the private key stored in the secret manager, I can now ssh into my private instance from the bastion
 
+### create the RDS 
+```
+resource "aws_db_subnet_group" "private_db_group" {
+  name       = "main"
+  subnet_ids = [module.my_network.private2_subnet_id , module.my_network.private1_subnet_id ]
+
+  tags = {
+    Name = "My DB subnet group"
+  }
+}
+resource "aws_elasticache_subnet_group" "private_cache_group" {
+  name       = "cache-subnet-group"
+  subnet_ids = [module.my_network.private2_subnet_id , module.my_network.private1_subnet_id ]
+}
+
+resource "aws_db_instance" "myDB" {
+  allocated_storage      = 10
+  engine                 = "mysql"
+  engine_version         = "5.7"
+  instance_class         = "db.t3.micro"
+  name                   = "mydb"
+  username               = "hamada"
+  password               = "123456789"
+  parameter_group_name   = "default.mysql5.7"
+  skip_final_snapshot    = true
+  port                   = 3306
+  vpc_security_group_ids = [aws_security_group.db_SG.id]
+  db_subnet_group_name   = aws_db_subnet_group.private_db_group.name
+  ```
+### create the elasticCache 
+```
+resource "aws_elasticache_cluster" "my_cache_DB" {
+  cluster_id           = "my-cluster"
+  engine               = "redis"
+  node_type            = "cache.t2.micro"
+  num_cache_nodes      = 1
+  parameter_group_name = "default.redis3.2"
+  engine_version       = "3.2.10"
+  port                 = 6379
+  subnet_group_name = aws_elasticache_subnet_group.private_cache_group.name
+  security_group_ids = [aws_security_group.db_SG.id]
+}
+```
+### creating the loadbalancer 
+To create a loadbalancer i need to create first a target group to include my private instance 
+```
+resource "aws_lb_target_group" "tg" {
+    name     = "my-lb-tg"
+    port     = 80
+    protocol = "HTTP"
+    vpc_id   = module.my_network.vpc_id
+}
+
+//i need to create TG attachment to attach my instance 
+resource "aws_lb_target_group_attachment" "tg_attach" {
+    target_group_arn = aws_lb_target_group.tg.arn
+    target_id        = aws_instance.bastionHost.id
+    port             = 80
+}
+
+```
+then to create loadbalancer i needed to create a loadbalancer listeners to attach the security group to my loadbalancer
+```
+resource "aws_lb" "alb" {
+    name               = "my-alb"
+    internal           = false
+    load_balancer_type = "application"
+    security_groups    = [aws_security_group.alb_sg.id]
+    subnets            = [module.my_network.public1_subnet_id, module.my_network.public2_subnet_id]
+
+}
+
+
+resource "aws_lb_listener" "alb_listener" {
+    load_balancer_arn = aws_lb.alb.arn
+    port              = "80"
+    protocol          = "HTTP"
+
+    default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.tg.arn
+    }
+}
+```
 
 ## Creating two tfvars files for both dev and prod workspaces 
 I created two diffrenet tfvars files, each have a diffrenet declaraton for some variables as the region of the VPC as example
