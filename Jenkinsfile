@@ -13,30 +13,30 @@ pipeline {
             //         sh 'terraform destroy --auto-approve -no-color'}
             //     }
             // }
-            stage('terraform plan') {
-                steps {
-                    withAWS(credentials: 'aws_credential', region: 'us-east-1'){
-                    sh 'terraform plan -no-color '}
-                    }
-                }
+            // stage('terraform plan') {
+            //     steps {
+            //         withAWS(credentials: 'aws_credential', region: 'us-east-1'){
+            //         sh 'terraform plan -no-color '}
+            //         }
+            //     }
 
-            stage('terraform apply') {
-                steps {
-                    withAWS(credentials: 'aws_credential', region: 'us-east-1'){
-                    sh 'terraform apply --auto-approve -no-color '}
-                    }
-            }
-            stage('configure ec2 slave ') {
-                steps {
-                    withAWS(credentials: 'aws_credential', region: 'us-east-1'){
-                    sh 'ansible-playbook -i /var/jenkins_home/hosts slave.yaml  '}
-                }
-            }
+            // stage('terraform apply') {
+            //     steps {
+            //         withAWS(credentials: 'aws_credential', region: 'us-east-1'){
+            //         sh 'terraform apply --auto-approve -no-color '}
+            //         }
+            // }
+            // stage('configure ec2 slave ') {
+            //     steps {
+            //         withAWS(credentials: 'aws_credential', region: 'us-east-1'){
+            //         sh 'ansible-playbook -i /var/jenkins_home/hosts slave.yaml  '}
+            //     }
+            // }
             stage('build the application'){
                 agent { node { label 'slave-vm'} }
                 steps {
                     sh '''
-                        usermod -aG docker ubuntu
+                        sudo usermod -aG docker ubuntu
                         cd ./Nodeapp
                         docker build -f dockerfile -t nodejsapp .
                     '''    
