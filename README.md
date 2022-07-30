@@ -1,6 +1,6 @@
 # Infrastructure CI/CD for NodeJS app
 ## Brief on the project 
-Creating an automated pipeline using jenkins to create an infrstructure on AWS cloud using Terraform then deploy a Nodejs app on container in the private instance configured as slave node using Ansible, The application is connected to RDS and elasticCache then expose it using a loadbalancer.
+Creating an automated pipeline using jenkins to create an infrstructure on AWS cloud using Terraform then build and deploy a Nodejs app on container in the private instance configured as slave node using Ansible, The application is connected to RDS and elasticCache then expose it using a loadbalancer.
 ## Extra features
 uploading my statefile to s3 bucket to be synchronize with the changes my contributers do and to be able to trigger it with lambda function to send me mail with every update in it using AWS SES service 
 ## Tools and Services i used in this project
