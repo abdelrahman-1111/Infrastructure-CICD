@@ -196,21 +196,21 @@ EOF
 
 4. create a file to store the private key i created using tls resource 
 ```
-resource "local_file" "inventory" {
-    filename = "/var/jenkins_home/hosts"
-    content = <<EOF
-[slave]
-${aws_instance.privateinstance.private_ip}
-EOF
-}
-```
-5. create inventory file store the private ip of my instance 
-```
 resource "local_file" "private_key" {
     filename = "/var/jenkins_home/pk"
     file_permission = 0400
     content = <<EOF
 ${tls_private_key.ssh-key.private_key_pem}
+EOF
+}
+```
+5. create inventory file store the private ip of my instance 
+```
+resource "local_file" "inventory" {
+    filename = "/var/jenkins_home/hosts"
+    content = <<EOF
+[slave]
+${aws_instance.privateinstance.private_ip}
 EOF
 }
 ```
